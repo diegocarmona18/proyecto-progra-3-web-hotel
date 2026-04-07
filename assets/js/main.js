@@ -1,64 +1,82 @@
 /* main.js
-   - Este script se usa en TODAS las páginas.
-   - Su trabajo es: revisar si hay sesión y cambiar el botón del navbar.
+   Este archivo se usa en todas las páginas.
+   Se encarga de:
+   1) revisar si hay sesión
+   2) cambiar el botón del navbar
+   3) proteger páginas privadas como el dashboard
 */
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
+  protegerRutasPrivadas();
   actualizarBotonNavbar();
 });
 
-/* Cambia el botón del navbar según haya sesión o no */
-function actualizarBotonNavbar() {
-  // Intentamos encontrar el link del login por ID (ideal)
-  let boton = document.getElementById("navAuth");
+/* 
+  Esta función revisa si la página actual necesita sesión.
+  Por ahora solo protegemos el dashboard.
+*/
+function protegerRutasPrivadas() {
+  const rutaActual = window.location.pathname;
+  const haySesion = localStorage.getItem("hotel_session");
 
-  // Si no existe por ID, lo buscamos por clase (por si se te olvida el id)
-  if (!boton) {
-    boton = document.querySelector("a.btn-login");
+  // Si intenta entrar al dashboard sin sesión, lo devolvemos al login
+  if (rutaActual.includes("/dashboard/") && !haySesion) {
+    window.location.href = obtenerRuta("login");
   }
+}
 
-  // Si igual no existe, no hacemos nada
-  if (!boton) return;
+/*
+  Cambia el botón del navbar según exista sesión o no.
+*/
+function actualizarBotonNavbar() {
+  const botonNavbar = document.getElementById("navAuth");
+  if (!botonNavbar) return;
 
-  // Leer la sesión del localStorage
-  const sessionRaw = localStorage.getItem("hotel_session");
+  const sesionGuardada = localStorage.getItem("hotel_session");
 
-  // CASO 1: No hay sesión
-  if (!sessionRaw) {
-    boton.textContent = "Iniciar Sesión";
-    boton.href = rutaCorrecta("login");
-    boton.onclick = null; // quitamos eventos anteriores por si acaso
+  // Si NO hay sesión
+  if (!sesionGuardada) {
+    botonNavbar.textContent = "Iniciar Sesión";
+    botonNavbar.href = obtenerRuta("login");
+    botonNavbar.onclick = null;
     return;
   }
 
-  // CASO 2: Sí hay sesión
-  const session = JSON.parse(sessionRaw);
+  // Si SÍ hay sesión
+  const sesion = JSON.parse(sesionGuardada);
 
-  boton.textContent = `Cerrar sesión (${session.name})`;
-  boton.href = "#";
+  botonNavbar.textContent = `Cerrar sesión (${sesion.name})`;
+  botonNavbar.href = "#";
 
-  // Al hacer click: borrar sesión y volver al inicio
-  boton.onclick = (e) => {
+  botonNavbar.onclick = function (e) {
     e.preventDefault();
+
     localStorage.removeItem("hotel_session");
-    window.location.href = rutaCorrecta("inicio");
+    localStorage.removeItem("busqueda_hotel"); // limpiamos búsqueda guardada también
+
+    window.location.href = obtenerRuta("inicio");
   };
 }
 
-/* 
-  Esta función devuelve la ruta correcta dependiendo
-  de si estás en la raíz, /pages/ o /dashboard/
+/*
+  Devuelve la ruta correcta según en qué carpeta esté la página.
 */
-function rutaCorrecta(destino) {
-  const path = window.location.pathname;
-
-  // Si estoy dentro de /pages/ o /dashboard/ uso ../
-  const estoyEnSubcarpeta = path.includes("/pages/") || path.includes("/dashboard/");
+function obtenerRuta(destino) {
+  const rutaActual = window.location.pathname;
+  const estoyEnSubcarpeta =
+    rutaActual.includes("/pages/") || rutaActual.includes("/dashboard/");
 
   if (destino === "login") {
     return estoyEnSubcarpeta ? "../login.html" : "login.html";
   }
 
-  // destino === "inicio"
-  return estoyEnSubcarpeta ? "../index.html" : "index.html";
+  if (destino === "inicio") {
+    return estoyEnSubcarpeta ? "../index.html" : "index.html";
+  }
+
+  if (destino === "habitaciones") {
+    return estoyEnSubcarpeta ? "../pages/habitaciones.html" : "pages/habitaciones.html";
+  }
+
+  return "";
 }
