@@ -1,67 +1,105 @@
 /* login.js
-   - Valida el login con usuarios simulados.
-   - Guarda la sesión en localStorage.
-   - Si ya hay sesión, manda directo al dashboard.
+   Este archivo valida un login simple con usuarios simulados.
+   Según el tipo de usuario, lo envía a una página diferente.
 */
 
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("loginForm");
-  if (!form) return;
+document.addEventListener("DOMContentLoaded", function () {
+  const formulario = document.getElementById("loginForm");
 
-  // Si ya hay sesión guardada, no tiene sentido pedir login otra vez
-  if (localStorage.getItem("hotel_session")) {
-    window.location.href = "./dashboard/dashboard.html";
+  if (!formulario) return;
+
+  // Si ya hay sesión iniciada, redirigimos según el rol
+  const sesionGuardada = localStorage.getItem("hotel_session");
+
+  if (sesionGuardada) {
+    const sesion = JSON.parse(sesionGuardada);
+
+    if (sesion.role === "admin" || sesion.role === "staff") {
+      window.location.href = "./dashboard/dashboard.html";
+    } else if (sesion.role === "cliente") {
+      window.location.href = "./pages/mi-reserva.html";
+    }
+
     return;
   }
 
-  form.addEventListener("submit", (e) => {
+  formulario.addEventListener("submit", function (e) {
     e.preventDefault();
     validarLogin();
   });
 });
 
-// Usuarios simulados
-const USERS = [
-  { email: "admin@hotel.com", password: "Admin123", role: "admin", name: "Administrador" },
-  { email: "recepcion@hotel.com", password: "Recep123", role: "staff", name: "Recepción" }
+/* Usuarios simulados */
+const usuarios = [
+  {
+    email: "admin@hotel.com",
+    password: "Admin123",
+    role: "admin",
+    name: "Administrador"
+  },
+  {
+    email: "recepcion@hotel.com",
+    password: "Recep123",
+    role: "staff",
+    name: "Recepción"
+  },
+  {
+    email: "cliente1@gmail.com",
+    password: "Cliente123",
+    role: "cliente",
+    name: "María López"
+  },
+  {
+    email: "cliente2@gmail.com",
+    password: "Cliente456",
+    role: "cliente",
+    name: "Carlos Pérez"
+  }
 ];
 
+/* Función que valida si el correo y la contraseña existen */
 function validarLogin() {
-  const emailInput = document.getElementById("email");
-  const passInput = document.getElementById("password");
-  const errorBox = document.getElementById("loginError");
+  const inputEmail = document.getElementById("email");
+  const inputPassword = document.getElementById("password");
+  const cajaError = document.getElementById("loginError");
 
-  const email = (emailInput.value || "").trim().toLowerCase();
-  const password = passInput.value || "";
+  const email = inputEmail.value.trim().toLowerCase();
+  const password = inputPassword.value.trim();
 
-  // Limpiar error anterior
-  errorBox.textContent = "";
+  cajaError.textContent = "";
 
-  // Validaciones simples
-  if (!email || !password) {
-    errorBox.textContent = "Por favor completa el correo y la contraseña.";
+  // Validaciones básicas
+  if (email === "" || password === "") {
+    cajaError.textContent = "Debes completar todos los campos.";
     return;
   }
 
-  // Buscar usuario
-  const user = USERS.find(u => u.email === email && u.password === password);
+  // Buscar usuario dentro del arreglo
+  const usuarioEncontrado = usuarios.find(function (usuario) {
+    return usuario.email === email && usuario.password === password;
+  });
 
-  if (!user) {
-    errorBox.textContent = "Correo o contraseña incorrectos.";
+  // Si no existe
+  if (!usuarioEncontrado) {
+    cajaError.textContent = "Correo o contraseña incorrectos.";
     return;
   }
 
-  // Crear “sesión”
-  const session = {
-    email: user.email,
-    name: user.name,
-    role: user.role,
+  // Crear la sesión
+  const sesion = {
+    email: usuarioEncontrado.email,
+    name: usuarioEncontrado.name,
+    role: usuarioEncontrado.role,
     loginAt: new Date().toISOString()
   };
 
-  // Guardar sesión
-  localStorage.setItem("hotel_session", JSON.stringify(session));
+  // Guardar la sesión
+  localStorage.setItem("hotel_session", JSON.stringify(sesion));
 
-  // Ir al dashboard
-  window.location.href = "./dashboard/dashboard.html";
+  // Redirigir según el rol
+  if (usuarioEncontrado.role === "admin" || usuarioEncontrado.role === "staff") {
+    window.location.href = "./dashboard/dashboard.html";
+  } else if (usuarioEncontrado.role === "cliente") {
+    window.location.href = "./pages/mi-reserva.html";
+  }
 }
