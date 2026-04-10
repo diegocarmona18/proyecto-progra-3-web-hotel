@@ -6,9 +6,9 @@
 }
 
 :root{
-    --primary: #0b6b4a; /* rainforest green */
-    --secondary: #00a896; /* turquoise */
-    --accent: #f4a261; /* warm sand */
+    --primary: #0b6b4a;
+    --secondary: #00a896;
+    --accent: #f4a261;
     --muted: #7f8c8d;
     --card-bg: #ffffff;
     --text: #12343a;
@@ -19,12 +19,10 @@ body {
     line-height: 1.6;
     color: var(--text);
     background-color: #f7fbfa;
-    /* Use provided PNG background (assets/img/fondo1.png) */
     background-image: linear-gradient(180deg, rgba(11,107,74,0.04), rgba(0,168,150,0.02));
     background-size: 100% 650px;
     background-position: top center;
     background-repeat: no-repeat;
-    /*background-attachment: fixed;*/
 }
 
 /* Navbar */
