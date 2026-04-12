@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Reserva - Hotel</title>
+    <link rel="stylesheet" href="../assets/css/styles-mi-reserva-y-buscador.css">
+    <link rel="stylesheet" href="../assets/css/styles-paquetes.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <h2 class="logo"><img src="../assets/img/logo.png" alt="Green Paradise logo" class="logo-img">Green Paradise</h2>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="habitaciones.html">Habitaciones</a></li>
+                <li><a href="paquetes.html">Paquetes</a></li>
+                <li><a href="buscador.html">Buscar</a></li>
+                <li><a href="mi-reserva.html">Mis Reservas</a></li>
+                <li><a href="checkin.html">Check-in</a></li>
+                <li><a href="sobre-nosotros.html">Sobre Nosotros</a></li>
+                <li><a href="login.html" class="btn-login">Iniciar Sesión</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main">
+        <div class="container">
+            <h1>Mis Reservas</h1>
+            <div id="reservasContainer">
+                <!-- Aquí se cargarán las reservas dinámicamente -->
+            </div>
+
+            <!-- Columna izquierda con el formulario -->
+            <div class="columna-formulario">
+                <form id="miFormulario">
+                    <div class="form-group">
+                        <label for="name">Nombre del Reservante:</label>
+                        <input type="text" id="name" name="name" placeholder="Ingrese su nombre completo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Correo Electrónico:</label>
+                        <input type="email" id="email" name="email" placeholder="Ingrese su correo de contacto" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="arrival-date">Fecha de Llegada:</label>
+                        <input type="date" id="arrival-date" name="arrival_date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="departure-date">Fecha de Salida:</label>
+                        <input type="date" id="departure-date" name="departure_date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nights">Número de Noches:</label>
+                        <input type="number" id="nights" name="nights" placeholder="Ingrese el número de noches" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rooms">Número de Reservaciones:</label>
+                        <input type="number" id="rooms" name="rooms" placeholder="Ingrese el número de habitaciones" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="room-type">Tipo de Reservación:</label>
+                        <select id="room-type" name="room_type" required>
+                            <option value="" disabled selected>Seleccione un tipo</option>
+                            <option value="Habitación 1">Habitación Individual</option>
+                            <option value="Habitación 2">Habitación Doble</option>
+                            <option value="Habitación 3">Habitación Suite</option>
+                        </select>
+                    </div>
+                    <input type="submit" value="Reservar">
+                </form>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Hotel Green Paradise</h4>
+                <p>Tu destino perfecto para relajación y diversión.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Enlaces Rápidos</h4>
+                <ul>
+                    <li><a href="../index.html">Inicio</a></li>
+                    <li><a href="habitaciones.html">Habitaciones</a></li>
+                    <li><a href="paquetes.html">Paquetes</a></li>
+                    <li><a href="sobre-nosotros.html">Sobre Nosotros</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contacto</h4>
+                <p>Email: info@greenparadise.com</p>
+                <p>Teléfono: +506 6020 6000</p>
+                <p>Dirección: Santa Teresa, CR</p>
+            </div>
+            <div class="footer-section">
+                <h4>Síguenos</h4>
+                <a href="#" class="social-link">Facebook</a>
+                <a href="#" class="social-link">Instagram</a>
+                <a href="#" class="social-link">Twitter</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Hotel Green Paradise. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    <script src="../assets/js/reservas.js"></script>
+</body>
+</html>
