@@ -163,6 +163,181 @@ body {
 }
 
 
+/* LISTADO DE HABITACIONES */
+
+.habitaciones-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.habitacion-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.habitacion-carousel {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  margin-bottom: 14px;
+  aspect-ratio: 16 / 9;
+  background: #e9f5f0;
+}
+
+.carousel-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.35s ease;
+}
+
+.carousel-slide {
+  width: 100%;
+  height: 100%;
+  flex: 0 0 100%;
+  object-fit: cover;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 18px;
+  background: rgba(11, 107, 74, 0.75);
+  transition: background 0.2s ease;
+  z-index: 2;
+}
+
+.carousel-btn:hover {
+  background: rgba(11, 107, 74, 0.95);
+}
+
+.carousel-btn.prev {
+  left: 10px;
+}
+
+.carousel-btn.next {
+  right: 10px;
+}
+
+.carousel-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 2;
+}
+
+.carousel-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.carousel-dot.activo {
+  background: #0b6b4a;
+}
+
+.habitacion-card h3 {
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+.habitacion-card p {
+  color: #4f5b61;
+  margin-bottom: 8px;
+}
+
+.estado.disponible {
+  color: #1d7f45;
+}
+
+.estado.no-disponible {
+  color: #b12a2a;
+}
+
+
+/* PAQUETES Y PROMOCIONES */
+
+.paquetes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 22px;
+  margin-top: 26px;
+}
+
+.paquete-card {
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 12px;
+  padding: 22px;
+  box-shadow: 0 6px 20px rgba(5, 44, 33, 0.12);
+  border-top: 6px solid var(--secondary);
+}
+
+.paquete-card h2 {
+  color: var(--primary);
+  margin-bottom: 8px;
+  font-size: 1.4rem;
+}
+
+.paquete-card h3 {
+  margin-top: 14px;
+  margin-bottom: 8px;
+  color: #234;
+  font-size: 1.03rem;
+}
+
+.paquete-intro {
+  color: #3e4e55;
+}
+
+.paquete-highlight {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #fff4d8;
+  color: #6c4e11;
+  font-weight: 600;
+}
+
+.paquete-card ul {
+  margin-left: 18px;
+  color: #334248;
+}
+
+.paquete-card li {
+  margin-bottom: 7px;
+}
+
+.paquete-card.romantico {
+  border-top-color: #df7e98;
+}
+
+.paquete-card.familiar {
+  border-top-color: #4d9de0;
+}
+
+.paquete-card.aventura {
+  border-top-color: #2a9d8f;
+}
+
+
 /* BOTONES */
 
 .btn {
@@ -250,12 +425,55 @@ button:hover {
 
 /* FOOTER */
 
-footer {
+footer,
+.footer {
   background: var(--primary);
   color: white;
   text-align: center;
   padding: 20px;
   margin-top: 40px;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  text-align: left;
+}
+
+.footer-section h4 {
+  margin-bottom: 10px;
+  font-size: 1.05rem;
+}
+
+.footer-section p,
+.footer-section li,
+.footer-section a {
+  color: rgba(255,255,255,0.92);
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section li {
+  margin-bottom: 6px;
+}
+
+.social-link {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.footer-bottom {
+  margin-top: 18px;
+  border-top: 1px solid rgba(255,255,255,0.18);
+  padding-top: 12px;
 }
 
 /* Mensaje de error */
@@ -453,5 +671,15 @@ footer {
   }
   .card-pro__body{
     text-align: center;
+  }
+  .footer-content {
+    text-align: center;
+  }
+  .carousel-btn {
+    width: 34px;
+    height: 34px;
+  }
+  .paquete-card {
+    padding: 18px;
   }
 }

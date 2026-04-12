@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-label="Habitacion simple vista 2">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#caf0f8"/>
+      <stop offset="100%" stop-color="#90e0ef"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="700" fill="url(#bg2)"/>
+  <rect x="120" y="150" width="960" height="410" rx="24" fill="#ffffff" opacity="0.88"/>
+  <rect x="180" y="420" width="840" height="100" rx="12" fill="#0077b6"/>
+  <rect x="220" y="240" width="360" height="150" rx="12" fill="#00b4d8"/>
+  <circle cx="850" cy="300" r="100" fill="#48cae4"/>
+  <text x="600" y="620" text-anchor="middle" font-size="52" font-family="Segoe UI, Arial, sans-serif" fill="#023e8a">Habitacion Simple - Vista 2</text>
+</svg>

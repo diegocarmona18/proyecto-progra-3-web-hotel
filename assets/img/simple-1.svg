@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-label="Habitacion simple vista 1">
+  <defs>
+    <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#d8f3dc"/>
+      <stop offset="100%" stop-color="#95d5b2"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="700" fill="url(#bg1)"/>
+  <rect x="140" y="170" width="920" height="360" rx="24" fill="#ffffff" opacity="0.9"/>
+  <rect x="220" y="280" width="480" height="170" rx="14" fill="#2d6a4f"/>
+  <rect x="235" y="300" width="210" height="50" rx="8" fill="#f1faee"/>
+  <rect x="455" y="300" width="220" height="50" rx="8" fill="#f1faee"/>
+  <rect x="760" y="245" width="210" height="150" rx="10" fill="#40916c"/>
+  <text x="600" y="620" text-anchor="middle" font-size="52" font-family="Segoe UI, Arial, sans-serif" fill="#1b4332">Habitacion Simple - Vista 1</text>
+</svg>

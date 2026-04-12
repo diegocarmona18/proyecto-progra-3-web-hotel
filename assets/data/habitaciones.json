@@ -5,7 +5,12 @@
     "descripcion": "Habitación básica con cama individual",
     "precio": 50,
     "capacidad": 1,
-    "disponible": true
+    "disponible": true,
+    "imagenes": [
+      "https://i.pinimg.com/1200x/7a/c2/46/7ac2460ce15b7c61bf19106449193c4e.jpg",
+      "https://i.pinimg.com/1200x/d2/84/8a/d2848aa69b3bad7f9a47203196ed97f7.jpg",
+      "https://i.pinimg.com/1200x/31/d9/f4/31d9f43bfb664ac928748d9a64b5cea2.jpg"
+    ]
   },
   {
     "id": 2,
@@ -13,7 +18,12 @@
     "descripcion": "Habitación con cama doble",
     "precio": 80,
     "capacidad": 2,
-    "disponible": true
+    "disponible": true,
+    "imagenes": [
+      "https://i.pinimg.com/736x/a0/4a/a3/a04aa347e48996997aec9e947ba1e9e5.jpg",
+      "https://i.pinimg.com/736x/41/e4/15/41e415f78c699e03c60b2da920539d73.jpg",
+      "https://i.pinimg.com/736x/46/36/48/46364858a4cc2de626c90e8424622d7b.jpg"
+    ]
   },
   {
     "id": 3,
@@ -21,6 +31,11 @@
     "descripcion": "Suite lujosa con sala de estar",
     "precio": 150,
     "capacidad": 4,
-    "disponible": true
+    "disponible": true,
+    "imagenes": [
+      "https://i.pinimg.com/1200x/f5/b3/8a/f5b38a87e77a0d61be055674be456743.jpg",
+      "https://i.pinimg.com/736x/26/a8/f5/26a8f5d43e2d515d87d2ff3a21957716.jpg",
+      "https://i.pinimg.com/1200x/c8/b7/cf/c8b7cf0b0446a8e7a65ebaa2633976a7.jpg"
+    ]
   }
 ]
