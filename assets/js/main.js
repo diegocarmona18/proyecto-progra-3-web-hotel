@@ -3,7 +3,7 @@
    Se encarga de:
    1) revisar si hay sesión
    2) cambiar el botón del navbar
-   3) proteger páginas privadas como el dashboard
+   3) proteger páginas privadas como dashboard y mis reservas
 */
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -12,16 +12,37 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /* 
-  Esta función revisa si la página actual necesita sesión.
-  Por ahora solo protegemos el dashboard.
+  Esta función revisa si la página actual necesita sesión
+  y también valida el rol del usuario.
 */
 function protegerRutasPrivadas() {
   const rutaActual = window.location.pathname;
-  const haySesion = localStorage.getItem("hotel_session");
+  const sesionGuardada = localStorage.getItem("hotel_session");
 
-  // Si intenta entrar al dashboard sin sesión, lo devolvemos al login
-  if (rutaActual.includes("/dashboard/") && !haySesion) {
-    window.location.href = obtenerRuta("login");
+  // Si no hay sesión y quiere entrar a páginas privadas
+  if (!sesionGuardada) {
+    if (rutaActual.includes("/dashboard/") || rutaActual.includes("mi-reserva.html")) {
+      window.location.href = obtenerRuta("login");
+    }
+    return;
+  }
+
+  const sesion = JSON.parse(sesionGuardada);
+
+  // Si entra al dashboard, solo admin o staff pueden verlo
+  if (rutaActual.includes("/dashboard/")) {
+    if (sesion.role !== "admin" && sesion.role !== "staff") {
+      window.location.href = obtenerRuta("inicio");
+      return;
+    }
+  }
+
+  // Si entra a Mis Reservas, solo cliente puede verlo
+  if (rutaActual.includes("mi-reserva.html")) {
+    if (sesion.role !== "cliente") {
+      window.location.href = obtenerRuta("inicio");
+      return;
+    }
   }
 }
 
@@ -52,12 +73,11 @@ function actualizarBotonNavbar() {
     e.preventDefault();
 
     localStorage.removeItem("hotel_session");
-    localStorage.removeItem("busqueda_hotel"); // limpiamos búsqueda guardada también
+    localStorage.removeItem("busqueda_hotel");
 
     window.location.href = obtenerRuta("inicio");
   };
-}
-
+} 
 /*
   Devuelve la ruta correcta según en qué carpeta esté la página.
 */
