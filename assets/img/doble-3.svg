@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-label="Habitacion doble vista 3">
+  <defs>
+    <linearGradient id="d3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e9edc9"/>
+      <stop offset="100%" stop-color="#ccd5ae"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="700" fill="url(#d3)"/>
+  <rect x="120" y="160" width="960" height="390" rx="24" fill="#fff" opacity="0.9"/>
+  <rect x="200" y="280" width="310" height="180" rx="12" fill="#588157"/>
+  <rect x="540" y="280" width="310" height="180" rx="12" fill="#588157"/>
+  <rect x="880" y="250" width="140" height="210" rx="12" fill="#3a5a40"/>
+  <text x="600" y="620" text-anchor="middle" font-size="52" font-family="Segoe UI, Arial, sans-serif" fill="#344e41">Habitacion Doble - Vista 3</text>
+</svg>
