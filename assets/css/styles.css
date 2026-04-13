@@ -591,14 +591,14 @@ footer,
 /* Títulos de sección */
 .section-title{
   text-align: center;
-  color: #2c3e50;
+  color: #ffffff;
   font-size: 1.6rem;
   margin-bottom: 8px;
 }
 
 .section-subtitle{
   text-align: center;
-  color: var(--muted);
+  color: #ffffff;
   margin-bottom: 18px;
 }
 
