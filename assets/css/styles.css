@@ -358,6 +358,12 @@ body {
   box-shadow: 0 6px 18px rgba(0,168,150,0.18);
 }
 
+.btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 4px rgba(0,168,150,0.18);
+  filter: brightness(0.92);
+}
+
 /* Botón ghost para el hero */
 .btn--ghost{
   background: rgba(255,255,255,0.14);
@@ -368,6 +374,12 @@ body {
 .btn--ghost:hover{
   transform: translateY(-2px);
   box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+}
+
+.btn--ghost:active{
+  transform: translateY(2px);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+  filter: brightness(0.88);
 }
 
 
@@ -609,6 +621,8 @@ footer,
   border: 1px solid rgba(0,168,150,0.12);
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
   transition: transform 0.25s, box-shadow 0.25s;
+  display: flex;
+  flex-direction: column;
 }
 
 .card-pro:hover{
@@ -633,6 +647,9 @@ footer,
 .card-pro__body{
   padding: 18px;
   text-align: left;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .card-pro__body h3{
@@ -644,6 +661,7 @@ footer,
 .card-pro__body p{
   color: var(--muted);
   margin-bottom: 14px;
+  flex: 1;
 }
 
 /*  RESPONSIVE GENERAL */
