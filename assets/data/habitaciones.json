@@ -28,7 +28,7 @@
   {
     "id": 3,
     "nombre": "Suite",
-    "descripcion": "Suite lujosa con sala de estar",
+    "descripcion": "Suite Lujosa con sala de estar",
     "precio": 150,
     "capacidad": 4,
     "disponible": true,
