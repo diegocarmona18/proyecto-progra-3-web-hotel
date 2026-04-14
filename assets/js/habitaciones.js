@@ -70,6 +70,9 @@ function renderizarHabitaciones(contenedor, habitaciones) {
                 '<p><strong>Capacidad:</strong> ' + habitacion.capacidad + ' persona(s)</p>' +
                 '<p><strong>Precio:</strong> $' + habitacion.precio + ' por noche</p>' +
                 '<p class="estado ' + estadoClase + '"><strong>Estado:</strong> ' + estado + '</p>' +
+                (habitacion.disponible
+                    ? '<a href="mi-reserva.html?habitacion=' + encodeURIComponent(habitacion.nombre) + '" class="btn-reservar">Reservar</a>'
+                    : '<span class="btn-reservar btn-reservar-deshabilitado">No disponible</span>') +
             '</article>'
         );
     });

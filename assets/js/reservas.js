@@ -32,23 +32,22 @@ function cargarReservasCliente() {
     .then(function (respuesta) {
       return respuesta.json();
     })
-    .then(function (reservas) {
+    .then(function () {
       const reservasLocales = JSON.parse(localStorage.getItem("reservas_locales")) || [];
-      const todasLasReservas = reservas.concat(reservasLocales);
 
-      const reservasCliente = todasLasReservas.filter(function (reserva) {
+      const reservasCliente = reservasLocales.filter(function (reserva) {
         return reserva.email.toLowerCase() === sesion.email.toLowerCase();
       });
 
       if (reservasCliente.length === 0) {
         contenedor.innerHTML = `
-          <h3>Bienvenido(a), ${sesion.name}</h3>
-          <p>No tienes reservas registradas todavía.</p>
+          <h3 style="color:#ffffff;text-align:center;background:rgba(0,0,0,0.45);padding:12px 20px;border-radius:8px;display:inline-block;width:100%;">Bienvenido(a), ${sesion.name}</h3>
+          <p style="color:#ffffff;text-align:center;background:rgba(0,0,0,0.45);padding:10px 20px;border-radius:8px;margin-top:8px;">No tienes reservas registradas todavía.</p>
         `;
         return;
       }
 
-      contenedor.innerHTML = `<h3>Bienvenido(a), ${sesion.name}</h3>`;
+      contenedor.innerHTML = `<h3 style="color:#ffffff;text-align:center;background:rgba(0,0,0,0.45);padding:12px 20px;border-radius:8px;">Bienvenido(a), ${sesion.name}</h3>`;
 
       reservasCliente.forEach(function (reserva) {
         contenedor.innerHTML += `
@@ -85,6 +84,7 @@ function prepararFormularioReserva() {
   const fechaEntradaInput = document.getElementById("arrival-date");
   const fechaSalidaInput = document.getElementById("departure-date");
   const nochesInput = document.getElementById("nights");
+  const roomTypeSelect = document.getElementById("room-type");
 
   if (campoNombre) {
     campoNombre.value = sesion.name;
@@ -92,6 +92,20 @@ function prepararFormularioReserva() {
 
   if (campoEmail) {
     campoEmail.value = sesion.email;
+  }
+
+  // Pre-seleccionar habitación si viene desde la página de habitaciones
+  if (roomTypeSelect) {
+    const params = new URLSearchParams(window.location.search);
+    const habitacionParam = params.get("habitacion");
+    if (habitacionParam) {
+      const opcion = Array.from(roomTypeSelect.options).find(
+        function (o) { return o.value.toLowerCase() === habitacionParam.toLowerCase(); }
+      );
+      if (opcion) {
+        roomTypeSelect.value = opcion.value;
+      }
+    }
   }
 
   // Obtener fecha actual en formato YYYY-MM-DD
