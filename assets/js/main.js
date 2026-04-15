@@ -21,7 +21,7 @@ function protegerRutasPrivadas() {
 
   // Si no hay sesión y quiere entrar a páginas privadas
   if (!sesionGuardada) {
-    if (rutaActual.includes("/dashboard/") || rutaActual.includes("mi-reserva.html")) {
+    if (rutaActual.includes("/dashboard/")) {
       window.location.href = obtenerRuta("login");
     }
     return;

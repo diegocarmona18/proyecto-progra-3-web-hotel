@@ -12,21 +12,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function cargarReservasCliente() {
   const contenedor = document.getElementById("reservasContainer");
+  const loginPrompt = document.getElementById("loginPrompt");
+  const formWrapper = document.getElementById("reservaFormWrapper");
   if (!contenedor) return;
 
   const sesionGuardada = localStorage.getItem("hotel_session");
 
   if (!sesionGuardada) {
-    contenedor.innerHTML = "<p>Debes iniciar sesión para ver tus reservas.</p>";
+    contenedor.innerHTML = "";
+    if (loginPrompt) loginPrompt.hidden = false;
+    if (formWrapper) formWrapper.style.display = "none";
     return;
   }
 
   const sesion = JSON.parse(sesionGuardada);
 
   if (sesion.role !== "cliente") {
-    contenedor.innerHTML = "<p>Esta sección es solo para clientes.</p>";
+    contenedor.innerHTML = "<p style='text-align:center;color:#ffffff;background:rgba(0,0,0,0.45);padding:10px 16px;border-radius:8px;max-width:560px;margin:0 auto 26px;'>Esta sección es solo para clientes.</p>";
+    if (loginPrompt) loginPrompt.hidden = true;
+    if (formWrapper) formWrapper.style.display = "none";
     return;
   }
+
+  if (loginPrompt) loginPrompt.hidden = true;
+  if (formWrapper) formWrapper.style.display = "block";
 
   fetch("../assets/data/reservas.json")
     .then(function (respuesta) {
@@ -41,24 +50,43 @@ function cargarReservasCliente() {
 
       if (reservasCliente.length === 0) {
         contenedor.innerHTML = `
-          <h3 style="color:#ffffff;text-align:center;background:rgba(0,0,0,0.45);padding:12px 20px;border-radius:8px;display:inline-block;width:100%;">Bienvenido(a), ${sesion.name}</h3>
-          <p style="color:#ffffff;text-align:center;background:rgba(0,0,0,0.45);padding:10px 20px;border-radius:8px;margin-top:8px;">No tienes reservas registradas todavía.</p>
+          <div class="reserva-welcome">Bienvenido(a), ${sesion.name}</div>
+          <article class="reserva-empty">
+            <h3>Aún no tienes reservaciones</h3>
+            <p>Completa el formulario de abajo para registrar tu próxima estadía.</p>
+          </article>
         `;
         return;
       }
 
-      contenedor.innerHTML = `<h3 style="color:#ffffff;text-align:center;background:rgba(0,0,0,0.45);padding:12px 20px;border-radius:8px;">Bienvenido(a), ${sesion.name}</h3>`;
+      contenedor.innerHTML = `<div class="reserva-welcome">Bienvenido(a), ${sesion.name}</div>`;
 
       reservasCliente.forEach(function (reserva) {
         contenedor.innerHTML += `
-          <div class="card">
-            <h3>Reserva #${reserva.id}</h3>
-            <p><strong>Cliente:</strong> ${reserva.cliente}</p>
-            <p><strong>Habitación:</strong> ${reserva.habitacion}</p>
-            <p><strong>Check-in:</strong> ${reserva.checkIn}</p>
-            <p><strong>Check-out:</strong> ${reserva.checkOut}</p>
-            <p><strong>Estado:</strong> ${reserva.estado}</p>
-          </div>
+          <article class="reserva-card">
+            <div class="reserva-card__header">
+              <h3 class="reserva-card__title">Reserva #${reserva.id}</h3>
+              <span class="reserva-card__badge">${reserva.estado}</span>
+            </div>
+            <div class="reserva-card__details">
+              <div class="reserva-detail">
+                <span>Cliente</span>
+                <strong>${reserva.cliente}</strong>
+              </div>
+              <div class="reserva-detail">
+                <span>Habitación</span>
+                <strong>${reserva.habitacion}</strong>
+              </div>
+              <div class="reserva-detail">
+                <span>Check-in</span>
+                <strong>${reserva.checkIn}</strong>
+              </div>
+              <div class="reserva-detail">
+                <span>Check-out</span>
+                <strong>${reserva.checkOut}</strong>
+              </div>
+            </div>
+          </article>
         `;
       });
     })

@@ -504,21 +504,14 @@ footer,
   justify-content: center;
   padding: 80px 20px;
   margin-bottom: 35px;
-
-  /* Fondo del hero */
-  background-image:
-    linear-gradient(135deg, rgba(11,107,74,0.78), rgba(0,168,150,0.55)),
-    url("../img/fondo1.png?v=1");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: transparent;
 }
 
 /* Overlay para más contraste */
 .hero__overlay{
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.08);
+  background: transparent;
 }
 
 /* Contenido encima del fondo */
@@ -528,6 +521,15 @@ footer,
   text-align: center;
   color: white;
   padding: 24px;
+}
+
+.hero__headline-box{
+  display: inline-block;
+  background: rgba(0,0,0,0.5);
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 90%;
+  margin-bottom: 18px;
 }
 
 .hero__tag{
@@ -682,6 +684,10 @@ footer,
   }
   .hero__title{
     font-size: 1.8rem;
+  }
+  .hero__headline-box{
+    padding: 14px 16px;
+    max-width: 92%;
   }
   .hero{
     min-height: 340px;
