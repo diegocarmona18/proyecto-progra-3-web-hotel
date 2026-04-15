@@ -85,11 +85,36 @@
                         <div class="form-group">
                             <label for="room-type">Tipo de Reservación:</label>
                             <select id="room-type" name="room_type" required>
-                                <option value="" disabled selected>Seleccione un tipo</option>
-                                <option value="Habitación Simple">Habitación Simple</option>
-                                <option value="Habitación Doble">Habitación Doble</option>
-                                <option value="Suite">Suite</option>
+                                <option value="" disabled selected>Seleccione una opción</option>
+                                <optgroup label="Habitaciones">
+                                    <option value="Habitación Simple">Habitación Simple</option>
+                                    <option value="Habitación Doble">Habitación Doble</option>
+                                    <option value="Suite">Suite</option>
+                                </optgroup>
+                                <optgroup label="Paquetes">
+                                    <option value="Paquete Romántico">Paquete Romántico</option>
+                                    <option value="Paquete Familiar">Paquete Familiar</option>
+                                    <option value="Paquete de Negocios">Paquete de Negocios</option>
+                                </optgroup>
                             </select>
+                        </div>
+                        <div class="price-display">
+                            <div class="price-row">
+                                <span>Precio por noche:</span>
+                                <span id="precio-unitario">-</span>
+                            </div>
+                            <div class="price-row">
+                                <span>Cantidad:</span>
+                                <span id="cantidad-display">-</span>
+                            </div>
+                            <div class="price-row">
+                                <span>Noches:</span>
+                                <span id="noches-display">-</span>
+                            </div>
+                            <div class="price-row total">
+                                <span>Total a pagar:</span>
+                                <span id="total-precio">$0.00</span>
+                            </div>
                         </div>
                         <input type="submit" value="Reservar">
                     </form>
