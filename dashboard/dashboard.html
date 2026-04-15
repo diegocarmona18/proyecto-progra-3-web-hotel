@@ -2,55 +2,273 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard - Administración</title>
-  <link rel="stylesheet" href="../assets/css/styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard - Green Paradise</title>
+
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
 </head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
 
-<body>
-
-<!-- NAVBAR -->
-<nav class="navbar">
-  <div class="nav-container">
-
-    <h2 class="logo">
-      <img src="../assets/img/logo.png" alt="Green Paradise logo" class="logo-img">
-      Green Paradise
-    </h2>
-
-    <ul class="nav-menu">
-      <li><a href="../index.html">Inicio</a></li>
-      <li><a href="../pages/habitaciones.html">Habitaciones</a></li>
-      <li><a href="../pages/paquetes.html">Paquetes</a></li>
-      <li><a href="../pages/buscador.html">Buscar</a></li>
-      <li><a href="../pages/mi-reserva.html">Mis Reservas</a></li>
-      <li><a href="../pages/checkin.html">Check-in</a></li>
-      <li><a href="../pages/sobre-nosotros.html">Sobre Nosotros</a></li>
-
-      <li>
-        <a href="../login.html" class="btn-login" id="navAuth">
-          Iniciar Sesión
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button">
+          <i class="fas fa-bars"></i>
         </a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="../index.html" class="nav-link">Volver al sitio</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="../pages/habitaciones.html" class="nav-link">Habitaciones</a>
       </li>
     </ul>
 
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a href="#" class="nav-link" id="cerrarSesionAdmin">
+          <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Sidebar -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <a href="../index.html" class="brand-link">
+      <span class="brand-text font-weight-light">Green Paradise Admin</span>
+    </a>
+
+    <div class="sidebar">
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center">
+        <div class="image">
+          <i class="fas fa-user-circle fa-2x text-white"></i>
+        </div>
+        <div class="info">
+          <a href="#" class="d-block" id="nombreAdmin">Administrador</a>
+        </div>
+      </div>
+
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" role="menu" data-widget="treeview">
+          <li class="nav-item">
+            <a href="#" class="nav-link active">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>Dashboard</p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="../pages/habitaciones.html" class="nav-link">
+              <i class="nav-icon fas fa-bed"></i>
+              <p>Habitaciones</p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="../pages/paquetes.html" class="nav-link">
+              <i class="nav-icon fas fa-gift"></i>
+              <p>Paquetes</p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="../pages/sobre-nosotros.html" class="nav-link">
+              <i class="nav-icon fas fa-hotel"></i>
+              <p>Sobre Nosotros</p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="../index.html" class="nav-link">
+              <i class="nav-icon fas fa-arrow-left"></i>
+              <p>Volver al sitio</p>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </aside>
+
+  <!-- Content Wrapper -->
+  <div class="content-wrapper">
+
+    <!-- Header -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Dashboard Administrativo</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="../index.html">Sitio Web</a></li>
+              <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+
+        <!-- Small boxes -->
+        <div class="row">
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3 id="reservasMes">128</h3>
+                <p>Reservas del mes</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-calendar-check"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-success">
+              <div class="inner">
+                <h3 id="ocupacionHotel">76%</h3>
+                <p>Ocupación estimada</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-warning">
+              <div class="inner">
+                <h3 id="clientesNuevos">34</h3>
+                <p>Clientes nuevos</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-users"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-danger">
+              <div class="inner">
+                <h3 id="cancelacionesMes">9</h3>
+                <p>Cancelaciones</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-times-circle"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cards -->
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Resumen general</h3>
+              </div>
+              <div class="card-body">
+                <p>Este panel muestra estadísticas administrativas del hotel Green Paradise.</p>
+                <p>Los datos son de demostración y permiten visualizar cómo funcionaría un sistema interno de gestión de reservas.</p>
+                <p>El acceso a este módulo está disponible únicamente para usuarios administrativos.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card card-success">
+              <div class="card-header">
+                <h3 class="card-title">Estado de operaciones</h3>
+              </div>
+              <div class="card-body">
+                <p><strong>Habitaciones más solicitadas:</strong> Suite y Doble</p>
+                <p><strong>Temporada actual:</strong> Alta</p>
+                <p><strong>Estado del sistema:</strong> Operando con normalidad</p>
+                <p><strong>Última actualización:</strong> Hoy</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Gráfico implementado-->
+        <div class="card">
+            <div class="card-header">
+          <h3 class="card-title">Reservas mensuales</h3>
+          </div>
+          <div class="card-body">
+          <canvas id="graficoReservas" style="min-height: 250px; height: 250px;"></canvas>
+        </div>
+          </div>
+
+        <!-- Table -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Resumen ficticio de reservas recientes</h3>
+          </div>
+          <div class="card-body p-0">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>ID Reserva</th>
+                  <th>Cliente</th>
+                  <th>Habitación</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1045</td>
+                  <td>María López</td>
+                  <td>Suite</td>
+                  <td><span class="badge bg-success">Confirmada</span></td>
+                </tr>
+                <tr>
+                  <td>1046</td>
+                  <td>Carlos Pérez</td>
+                  <td>Doble</td>
+                  <td><span class="badge bg-warning">Pendiente</span></td>
+                </tr>
+                <tr>
+                  <td>1047</td>
+                  <td>Ana Rodríguez</td>
+                  <td>Individual</td>
+                  <td><span class="badge bg-danger">Cancelada</span></td>
+                </tr>
+                <tr>
+                  <td>1048</td>
+                  <td>Luis Gómez</td>
+                  <td>Suite</td>
+                  <td><span class="badge bg-success">Confirmada</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
   </div>
-</nav>
 
-<!-- CONTENIDO -->
-<div class="dashboard-pages">
-  <h1>Panel de Administración</h1>
-
-  <div id="dashboardContent"></div>
+  <!-- Footer -->
+  <footer class="main-footer">
+    <strong>Hotel Green Paradise &copy; 2026</strong>
+    <div class="float-right d-none d-sm-inline-block">
+      Panel administrativo
+    </div>
+  </footer>
 </div>
 
-<footer>
-  <p>&copy; 2026 Hotel Green Paradise. Todos los derechos reservados.</p>
-</footer>
-
-<!-- SCRIPTS -->
-<script src="../assets/js/main.js?v=2"></script>
+<script src="plugins/jquery/jquery.min.js"></script>
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="plugins/chart.js/Chart.min.js"></script>
+<script src="dist/js/adminlte.min.js"></script>
 <script src="../assets/js/dashboard.js"></script>
-
 </body>
 </html>
