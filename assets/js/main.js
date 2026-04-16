@@ -22,7 +22,7 @@ function protegerRutasPrivadas() {
   const sesionGuardada = localStorage.getItem("hotel_session");
 
   if (!sesionGuardada) {
-    if (rutaActual.includes("/dashboard/") || rutaActual.includes("mi-reserva.html")) {
+    if (rutaActual.includes("/dashboard/")) {
       window.location.href = obtenerRuta("login");
     }
     return;

@@ -12,54 +12,85 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function cargarReservasCliente() {
   const contenedor = document.getElementById("reservasContainer");
+  const loginPrompt = document.getElementById("loginPrompt");
+  const formWrapper = document.getElementById("reservaFormWrapper");
   if (!contenedor) return;
 
   const sesionGuardada = localStorage.getItem("hotel_session");
 
   if (!sesionGuardada) {
-    contenedor.innerHTML = "<p>Debes iniciar sesión para ver tus reservas.</p>";
+    contenedor.innerHTML = "";
+    if (loginPrompt) loginPrompt.hidden = false;
+    if (formWrapper) formWrapper.style.display = "none";
     return;
   }
 
   const sesion = JSON.parse(sesionGuardada);
 
   if (sesion.role !== "cliente") {
-    contenedor.innerHTML = "<p>Esta sección es solo para clientes.</p>";
+    contenedor.innerHTML = "<p style='text-align:center;color:#ffffff;background:rgba(0,0,0,0.45);padding:10px 16px;border-radius:8px;max-width:560px;margin:0 auto 26px;'>Esta sección es solo para clientes.</p>";
+    if (loginPrompt) loginPrompt.hidden = true;
+    if (formWrapper) formWrapper.style.display = "none";
     return;
   }
+
+  if (loginPrompt) loginPrompt.hidden = true;
+  if (formWrapper) formWrapper.style.display = "block";
 
   fetch("../assets/data/reservas.json")
     .then(function (respuesta) {
       return respuesta.json();
     })
-    .then(function (reservas) {
+    .then(function () {
       const reservasLocales = JSON.parse(localStorage.getItem("reservas_locales")) || [];
-      const todasLasReservas = reservas.concat(reservasLocales);
 
-      const reservasCliente = todasLasReservas.filter(function (reserva) {
+      const reservasCliente = reservasLocales.filter(function (reserva) {
         return reserva.email.toLowerCase() === sesion.email.toLowerCase();
       });
 
       if (reservasCliente.length === 0) {
         contenedor.innerHTML = `
-          <h3>Bienvenido(a), ${sesion.name}</h3>
-          <p>No tienes reservas registradas todavía.</p>
+          <div class="reserva-welcome">Bienvenido(a), ${sesion.name}</div>
+          <article class="reserva-empty">
+            <h3>Aún no tienes reservaciones</h3>
+            <p>Completa el formulario de abajo para registrar tu próxima estadía.</p>
+          </article>
         `;
         return;
       }
 
-      contenedor.innerHTML = `<h3>Bienvenido(a), ${sesion.name}</h3>`;
+      contenedor.innerHTML = `<div class="reserva-welcome">Bienvenido(a), ${sesion.name}</div>`;
 
       reservasCliente.forEach(function (reserva) {
         contenedor.innerHTML += `
-          <div class="card">
-            <h3>Reserva #${reserva.id}</h3>
-            <p><strong>Cliente:</strong> ${reserva.cliente}</p>
-            <p><strong>Habitación:</strong> ${reserva.habitacion}</p>
-            <p><strong>Check-in:</strong> ${reserva.checkIn}</p>
-            <p><strong>Check-out:</strong> ${reserva.checkOut}</p>
-            <p><strong>Estado:</strong> ${reserva.estado}</p>
-          </div>
+          <article class="reserva-card">
+            <div class="reserva-card__header">
+              <h3 class="reserva-card__title">Reserva #${reserva.id}</h3>
+              <span class="reserva-card__badge">${reserva.estado}</span>
+            </div>
+            <div class="reserva-card__details">
+              <div class="reserva-detail">
+                <span>Cliente</span>
+                <strong>${reserva.cliente}</strong>
+              </div>
+              <div class="reserva-detail">
+                <span>Reservación</span>
+                <strong>${reserva.habitacion}</strong>
+              </div>
+              <div class="reserva-detail">
+                <span>Check-in</span>
+                <strong>${reserva.checkIn}</strong>
+              </div>
+              <div class="reserva-detail">
+                <span>Check-out</span>
+                <strong>${reserva.checkOut}</strong>
+              </div>
+              <div class="reserva-detail">
+                <span>Total a pagar</span>
+                <strong>$${(reserva.totalPrice || 0).toFixed(2)}</strong>
+              </div>
+            </div>
+          </article>
         `;
       });
     })
@@ -85,6 +116,18 @@ function prepararFormularioReserva() {
   const fechaEntradaInput = document.getElementById("arrival-date");
   const fechaSalidaInput = document.getElementById("departure-date");
   const nochesInput = document.getElementById("nights");
+  const roomsInput = document.getElementById("rooms");
+  const roomTypeSelect = document.getElementById("room-type");
+
+  // Mapeo de precios para habitaciones y paquetes
+  const preciosMap = {
+    "Habitación Simple": 50,
+    "Habitación Doble": 80,
+    "Suite": 150,
+    "Paquete Romántico": 150,
+    "Paquete Familiar": 200,
+    "Paquete de Negocios": 120
+  };
 
   if (campoNombre) {
     campoNombre.value = sesion.name;
@@ -92,6 +135,24 @@ function prepararFormularioReserva() {
 
   if (campoEmail) {
     campoEmail.value = sesion.email;
+  }
+
+  // Pre-seleccionar habitación o paquete si viene desde otra página
+  if (roomTypeSelect) {
+    const params = new URLSearchParams(window.location.search);
+    const reservaParam = params.get("habitacion") || params.get("paquete");
+
+    if (reservaParam) {
+      const opcion = Array.from(roomTypeSelect.options).find(
+        function (o) {
+          return o.value && o.value.toLowerCase() === reservaParam.toLowerCase();
+        }
+      );
+
+      if (opcion) {
+        roomTypeSelect.value = opcion.value;
+      }
+    }
   }
 
   // Obtener fecha actual en formato YYYY-MM-DD
@@ -111,6 +172,7 @@ function prepararFormularioReserva() {
 
     if (!entrada || !salida) {
       nochesInput.value = "";
+      actualizarPrecioTotal();
       return;
     }
 
@@ -122,8 +184,37 @@ function prepararFormularioReserva() {
 
     if (noches > 0) {
       nochesInput.value = noches;
+      actualizarPrecioTotal();
     } else {
       nochesInput.value = "";
+      actualizarPrecioTotal();
+    }
+  }
+
+  function actualizarPrecioTotal() {
+    const tipoSeleccionado = roomTypeSelect.value;
+    const cantidad = roomsInput.value || 0;
+    const noches = nochesInput.value || 0;
+    
+    const precioUnitario = preciosMap[tipoSeleccionado] || 0;
+    const total = precioUnitario * cantidad * noches;
+    
+    const precioDisplay = document.getElementById("precio-unitario");
+    const cantidadDisplay = document.getElementById("cantidad-display");
+    const nochesDisplay = document.getElementById("noches-display");
+    const totalDisplay = document.getElementById("total-precio");
+    
+    if (precioDisplay) {
+      precioDisplay.textContent = precioUnitario > 0 ? "$" + precioUnitario + ".00" : "-";
+    }
+    if (cantidadDisplay) {
+      cantidadDisplay.textContent = cantidad > 0 ? cantidad : "-";
+    }
+    if (nochesDisplay) {
+      nochesDisplay.textContent = noches > 0 ? noches : "-";
+    }
+    if (totalDisplay) {
+      totalDisplay.textContent = total > 0 ? "$" + total.toFixed(2) : "$0.00";
     }
   }
 
@@ -141,13 +232,17 @@ function prepararFormularioReserva() {
 
   fechaSalidaInput.addEventListener("change", calcularNoches);
 
+  roomTypeSelect.addEventListener("change", actualizarPrecioTotal);
+  roomsInput.addEventListener("change", actualizarPrecioTotal);
+  roomsInput.addEventListener("input", actualizarPrecioTotal);
+
   formulario.addEventListener("submit", function (e) {
     e.preventDefault();
-    guardarNuevaReserva(sesion);
+    guardarNuevaReserva(sesion, preciosMap);
   });
 }
 
-function guardarNuevaReserva(sesion) {
+function guardarNuevaReserva(sesion, preciosMap) {
   const nombre = document.getElementById("name").value.trim();
   const email = document.getElementById("email").value.trim();
   const llegada = document.getElementById("arrival-date").value;
@@ -189,6 +284,9 @@ function guardarNuevaReserva(sesion) {
 
   let reservasLocales = JSON.parse(localStorage.getItem("reservas_locales")) || [];
 
+  const precioUnitario = preciosMap[tipoHabitacion] || 0;
+  const totalPrice = precioUnitario * habitaciones * noches;
+
   const nuevaReserva = {
     id: Date.now(),
     cliente: nombre,
@@ -198,19 +296,25 @@ function guardarNuevaReserva(sesion) {
     checkOut: salida,
     estado: "Pendiente",
     nights: noches,
-    rooms: habitaciones
+    rooms: habitaciones,
+    precioUnitario: precioUnitario,
+    totalPrice: totalPrice
   };
 
   reservasLocales.push(nuevaReserva);
   localStorage.setItem("reservas_locales", JSON.stringify(reservasLocales));
 
-  alert("Reserva guardada correctamente.");
+  alert("Reserva guardada correctamente.\nTotal a pagar: $" + totalPrice.toFixed(2));
 
   document.getElementById("arrival-date").value = "";
   document.getElementById("departure-date").value = "";
   document.getElementById("nights").value = "";
   document.getElementById("rooms").value = "";
   document.getElementById("room-type").selectedIndex = 0;
+  document.getElementById("precio-unitario").textContent = "-";
+  document.getElementById("cantidad-display").textContent = "-";
+  document.getElementById("noches-display").textContent = "-";
+  document.getElementById("total-precio").textContent = "$0.00";
 
   // Restaurar límite mínimo de salida
   const fechaEntradaInput = document.getElementById("arrival-date");

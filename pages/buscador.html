@@ -9,19 +9,147 @@
 </head>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
+
+    // Set min date to today for both date inputs
+    const today = new Date().toISOString().split("T")[0];
+    document.getElementById("checkIn").min = today;
+    document.getElementById("checkOut").min = today;
+
+    document.getElementById("checkIn").addEventListener("change", function () {
+        document.getElementById("checkOut").min = this.value;
+    });
 
     const form = document.getElementById("buscadorForm");
 
-    if (form) {
-        form.addEventListener("submit", function(event) {
-            event.preventDefault();
-            window.location.href = "habitaciones.html";
-        });
-    }
+    form.addEventListener("submit", async function (event) {
+        event.preventDefault();
 
+        const checkIn  = document.getElementById("checkIn").value;
+        const checkOut = document.getElementById("checkOut").value;
+        const huespedes = parseInt(document.getElementById("huespedes").value, 10);
+        const resultadosDiv = document.getElementById("resultados");
+
+        if (checkIn >= checkOut) {
+            resultadosDiv.innerHTML = '<p class="msg-error">La fecha de salida debe ser posterior a la fecha de entrada.</p>';
+            return;
+        }
+
+        resultadosDiv.innerHTML = '<p class="msg-info">Buscando disponibilidad...</p>';
+
+        try {
+            const [habitacionesRes, reservasRes] = await Promise.all([
+                fetch("../assets/data/habitaciones.json"),
+                fetch("../assets/data/reservas.json")
+            ]);
+
+            const habitaciones = await habitacionesRes.json();
+            const reservas     = await reservasRes.json();
+
+            // Rooms reserved during the requested period (overlap check)
+            const reservadasNombres = new Set(
+                reservas
+                    .filter(r => r.estado !== "Cancelada" && r.checkIn < checkOut && r.checkOut > checkIn)
+                    .map(r => r.habitacion.toLowerCase())
+            );
+
+            const disponibles = habitaciones.filter(h =>
+                h.disponible &&
+                h.capacidad >= huespedes &&
+                !reservadasNombres.has(h.nombre.toLowerCase())
+            );
+
+            if (disponibles.length === 0) {
+                resultadosDiv.innerHTML = '<p class="msg-error">No hay habitaciones disponibles para las fechas y número de huéspedes indicados.</p>';
+                return;
+            }
+
+            const noches = Math.round((new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24));
+
+            const cards = disponibles.map(h => `
+                <div class="card resultado-card">
+                    <img src="${h.imagenes[0]}" alt="${h.nombre}" class="resultado-img">
+                    <h3>${h.nombre}</h3>
+                    <p>${h.descripcion}</p>
+                    <p class="resultado-detalle"><strong>Capacidad:</strong> hasta ${h.capacidad} huésped${h.capacidad > 1 ? "es" : ""}</p>
+                    <p class="resultado-detalle"><strong>Precio por noche:</strong> $${h.precio}</p>
+                    <p class="resultado-detalle"><strong>Total (${noches} noche${noches > 1 ? "s" : ""}):</strong> $${h.precio * noches}</p>
+                    <span class="badge-disponible">Disponible</span>
+                    <a href="mi-reserva.html?habitacion=${encodeURIComponent(h.nombre)}" class="btn-reservar">Reservar</a>
+                </div>
+            `).join("");
+
+            resultadosDiv.innerHTML = `
+                <h2 class="resultados-titulo">${disponibles.length} habitación${disponibles.length > 1 ? "es" : ""} disponible${disponibles.length > 1 ? "s" : ""}</h2>
+                <div class="resultados-grid">${cards}</div>
+            `;
+
+        } catch (err) {
+            resultadosDiv.innerHTML = '<p class="msg-error">Error al cargar los datos. Intente de nuevo.</p>';
+            console.error(err);
+        }
+    });
 });
 </script>
+
+<style>
+    .resultados-titulo {
+        text-align: center;
+        color: var(--primary, #0b6b4a);
+        margin: 30px 0 20px;
+        font-size: 1.4em;
+    }
+    .resultados-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 24px;
+        margin-top: 10px;
+    }
+    .resultado-card {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 20px;
+    }
+    .resultado-img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        border-radius: 6px;
+        margin-bottom: 8px;
+    }
+    .resultado-detalle {
+        color: #555;
+        font-size: 0.95em;
+        margin: 2px 0;
+    }
+    .badge-disponible {
+        display: inline-block;
+        margin-top: 8px;
+        padding: 4px 14px;
+        background: #0b6b4a;
+        color: white;
+        border-radius: 20px;
+        font-size: 0.85em;
+        font-weight: bold;
+        align-self: flex-start;
+    }
+    .msg-error {
+        text-align: center;
+        color: #c0392b;
+        background: #fdecea;
+        border: 1px solid #f5c6cb;
+        border-radius: 6px;
+        padding: 14px 20px;
+        margin-top: 20px;
+        font-weight: 500;
+    }
+    .msg-info {
+        text-align: center;
+        color: #555;
+        margin-top: 20px;
+    }
+</style>
 
 
 <body>
@@ -40,8 +168,14 @@ document.addEventListener("DOMContentLoaded", function() {
             </ul>
         </div>
     </nav>
+    <div class="banner-buscador">
+        <div class="banner-title-box">
+            <h1>Buscar Disponibilidad</h1>
+            <p>Encuentra la habitación perfecta para tus fechas</p>
+        </div>
+    </div>
+
     <div class="container">
-        <h1>Buscar Disponibilidad</h1>
         <form id="buscadorForm">
             <input type="date" id="checkIn" placeholder="Fecha de entrada" required>
             <input type="date" id="checkOut" placeholder="Fecha de salida" required>
@@ -70,7 +204,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 <h4>Contacto</h4>
                 <p>Email: info@greenparadise.com</p>
                 <p>Teléfono: +506 6020 6000</p>
-                <p>Dirección: Santa Teresa, CR</p>
+                <p>Dirección: La Fortuna, CR</p>
             </div>
             <div class="footer-section">
                 <h4>Síguenos</h4>

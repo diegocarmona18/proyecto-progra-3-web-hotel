@@ -57,7 +57,9 @@
     padding: 12px 20px;
     text-decoration: none;
     text-align: center;
-    margin: 20px;
+    margin: 16px auto 0;
+    display: block;
+    width: fit-content;
     border-radius: 5px;
     font-weight: bold;
     transition: background-color 0.3s ease;
@@ -68,25 +70,61 @@
     background-color: #229954;
 }
 
+.btn-reservar-deshabilitado {
+    background-color: #aaa;
+    color: white;
+    padding: 12px 20px;
+    text-align: center;
+    margin: 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: not-allowed;
+    display: block;
+}
+
 /* Banner destacado */
-.banner-paquetes {
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../img/banner-paquetes.jpg');
-    background-size: cover;
-    background-position: center;
+.banner-buscador {
+    background: transparent;
     color: white;
     padding: 60px 20px;
     text-align: center;
     margin-bottom: 40px;
 }
 
-.banner-paquetes h2 {
-    font-size: 2.5rem;
-    margin: 0 0 10px 0;
+.banner-title-box {
+    display: inline-block;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 90%;
 }
 
-.banner-paquetes p {
+.banner-title-box h1 {
+    font-size: 2.5rem;
+    margin: 0 0 10px 0;
+    color: white;
+}
+
+.banner-title-box p {
     font-size: 1.2rem;
     margin: 0;
+    color: white;
+}
+
+.banner-habitaciones {
+    background: transparent;
+    color: white;
+    padding: 60px 20px;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.banner-paquetes {
+    background: transparent;
+    color: white;
+    padding: 60px 20px;
+    text-align: center;
+    margin-bottom: 40px;
 }
 
 /* Titulo */
@@ -241,11 +279,16 @@ h1 {
         font-size: 1.3rem;
     }
 
-    .banner-paquetes h2 {
+.banner-title-box {
+        padding: 14px 16px;
+        max-width: 92%;
+    }
+
+    .banner-title-box h1 {
         font-size: 1.8rem;
     }
     
-    .banner-paquetes p {
+    .banner-title-box p {
         font-size: 1rem;
     }
 }
