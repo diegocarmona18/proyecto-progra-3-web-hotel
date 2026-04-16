@@ -4,11 +4,13 @@
    1) revisar si hay sesión
    2) cambiar el botón del navbar
    3) proteger páginas privadas como dashboard y mis reservas
+   4) mostrar acceso al dashboard solo para admin o staff
 */
 
 document.addEventListener("DOMContentLoaded", function () {
   protegerRutasPrivadas();
   actualizarBotonNavbar();
+  mostrarAccesoDashboard();
 });
 
 /* 
@@ -19,7 +21,6 @@ function protegerRutasPrivadas() {
   const rutaActual = window.location.pathname;
   const sesionGuardada = localStorage.getItem("hotel_session");
 
-  // Si no hay sesión y quiere entrar a páginas privadas
   if (!sesionGuardada) {
     if (rutaActual.includes("/dashboard/") || rutaActual.includes("mi-reserva.html")) {
       window.location.href = obtenerRuta("login");
@@ -29,7 +30,6 @@ function protegerRutasPrivadas() {
 
   const sesion = JSON.parse(sesionGuardada);
 
-  // Si entra al dashboard, solo admin o staff pueden verlo
   if (rutaActual.includes("/dashboard/")) {
     if (sesion.role !== "admin" && sesion.role !== "staff") {
       window.location.href = obtenerRuta("inicio");
@@ -37,7 +37,6 @@ function protegerRutasPrivadas() {
     }
   }
 
-  // Si entra a Mis Reservas, solo cliente puede verlo
   if (rutaActual.includes("mi-reserva.html")) {
     if (sesion.role !== "cliente") {
       window.location.href = obtenerRuta("inicio");
@@ -55,7 +54,6 @@ function actualizarBotonNavbar() {
 
   const sesionGuardada = localStorage.getItem("hotel_session");
 
-  // Si NO hay sesión
   if (!sesionGuardada) {
     botonNavbar.textContent = "Iniciar Sesión";
     botonNavbar.href = obtenerRuta("login");
@@ -63,7 +61,6 @@ function actualizarBotonNavbar() {
     return;
   }
 
-  // Si SÍ hay sesión
   const sesion = JSON.parse(sesionGuardada);
 
   botonNavbar.textContent = `Cerrar sesión (${sesion.name})`;
@@ -77,7 +74,30 @@ function actualizarBotonNavbar() {
 
     window.location.href = obtenerRuta("inicio");
   };
-} 
+}
+
+/*
+  Muestra el acceso al dashboard solo para admin o staff
+*/
+function mostrarAccesoDashboard() {
+  const dashboardItem = document.getElementById("navDashboardItem");
+  if (!dashboardItem) return;
+
+  const sesionGuardada = localStorage.getItem("hotel_session");
+  if (!sesionGuardada) {
+    dashboardItem.style.display = "none";
+    return;
+  }
+
+  const sesion = JSON.parse(sesionGuardada);
+
+  if (sesion.role === "admin" || sesion.role === "staff") {
+    dashboardItem.style.display = "list-item";
+  } else {
+    dashboardItem.style.display = "none";
+  }
+}
+
 /*
   Devuelve la ruta correcta según en qué carpeta esté la página.
 */
